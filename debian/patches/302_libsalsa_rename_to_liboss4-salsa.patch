@@ -1,0 +1,19 @@
+Rename libsalsa into liboss4-salsa (the former would conflict for no good reason
+with another package in Debian).
+
+Add rpath to /usr/lib/oss4-libsalsa, where the internal lib libOSSlib resides
+(as agreed on with ftp-master).
+
+Index: oss4-4.2-build2004/lib/libsalsa/Makefile
+===================================================================
+--- oss4-4.2-build2004.orig/lib/libsalsa/Makefile	2011-06-14 11:33:24.000000000 -0500
++++ oss4-4.2-build2004/lib/libsalsa/Makefile	2011-06-14 11:33:24.000000000 -0500
+@@ -46,7 +46,7 @@
+ 		$(LIBTOOL) --mode=compile ${CC} $(CFLAGS) -c rawmidi.c 
+ 
+ libsalsa.la:   $(LOBJECTS)
+-		$(LIBTOOL) --mode=link ${CC} -rpath /usr/lib -Wl,--version-script=Versions -version-info 2:0:0 -o libsalsa.la $(LOBJECTS) -L../libOSSlib -lOSSlib
++		$(LIBTOOL) --mode=link ${CC} -rpath /usr/lib -R /usr/lib/$(shell dpkg-architecture -qDEB_HOST_MULTIARCH)/oss4-libsalsa -Wl,--version-script=Versions -version-info 2:0:0 -o liboss4-salsa.la $(LOBJECTS) -L../libOSSlib -lOSSlib
+ 
+ install:	libsalsa.la
+ 		$(LIBTOOL) cp libsalsa.la /usr/lib

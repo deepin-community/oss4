@@ -1,0 +1,26 @@
+Index: oss4-4.2-build2004/lib/libsalsa/Makefile
+===================================================================
+--- oss4-4.2-build2004.orig/lib/libsalsa/Makefile	2011-06-14 11:33:22.000000000 -0500
++++ oss4-4.2-build2004/lib/libsalsa/Makefile	2011-06-14 11:35:03.000000000 -0500
+@@ -2,7 +2,7 @@
+ 
+ OSSLIBDIR=/usr/lib/oss
+ 
+-CFLAGS=-O -I../../include -I../libOSSlib
++CFLAGS+=-I../../include -I../libOSSlib
+ LIBTOOL=libtool --tag=CC
+ 
+ all: libsalsa.la
+Index: oss4-4.2-build2004/lib/libOSSlib/Makefile
+===================================================================
+--- oss4-4.2-build2004.orig/lib/libOSSlib/Makefile	2011-06-14 11:33:22.000000000 -0500
++++ oss4-4.2-build2004/lib/libOSSlib/Makefile	2011-06-14 11:33:24.000000000 -0500
+@@ -1,7 +1,7 @@
+ OBJS=libmain.o midiparser.o play_event.o
+ INSTALLLIB=/lib
+ LDFLAGS=-shared -fPIC
+-CFLAGS=-O -fPIC
++CFLAGS+=-fPIC
+ #LDFLAGS=-Bdynamic
+ AROPTS=rc
+ AR=ar

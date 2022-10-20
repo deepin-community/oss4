@@ -1,0 +1,54 @@
+Description: Drop ppc64-specific workaround for versioned symbols
+ Based on a patch by Breno Leitao applied to the original file from
+ alsa-lib.
+ oss4 started failing to build on ppc64el with binutils 2.35 because it
+ was setting an undefined symbol as the default version. It was doing that
+ in order to support dot-symbols/function descriptors on ppc, which is not
+ used by userspace ABI since a while, and not supported with ABIv2, the one
+ used by ppc64el, at all.
+Author: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/1891565
+Last-Update: 2020-08-14
+---
+Index: oss4-4.2-build2010/lib/libsalsa/alsa-symbols.h
+===================================================================
+--- oss4-4.2-build2010.orig/lib/libsalsa/alsa-symbols.h
++++ oss4-4.2-build2010/lib/libsalsa/alsa-symbols.h
+@@ -29,19 +29,10 @@
+ #define INTERNAL_CONCAT2_2(Pre, Post) Pre##Post
+ #define INTERNAL(Name) INTERNAL_CONCAT2_2(__, Name)
+ 
+-#ifdef __powerpc64__
+-# define symbol_version(real, name, version) 			\
+-	__asm__ (".symver " #real "," #name "@" #version);	\
+-	__asm__ (".symver ." #real ",." #name "@" #version)
+-# define default_symbol_version(real, name, version) 		\
+-	__asm__ (".symver " #real "," #name "@@" #version);	\
+-	__asm__ (".symver ." #real ",." #name "@@" #version)
+-#else
+ # define symbol_version(real, name, version) \
+ 	__asm__ (".symver " #real "," #name "@" #version)
+ # define default_symbol_version(real, name, version) \
+ 	__asm__ (".symver " #real "," #name "@@" #version)
+-#endif
+ 
+ #ifdef USE_VERSIONED_SYMBOLS
+ #define use_symbol_version(real, name, version) \
+@@ -50,17 +41,9 @@
+ 		default_symbol_version(real, name, version)
+ #else
+ #define use_symbol_version(real, name, version)	/* nothing */
+-#ifdef __powerpc64__
+-#define use_default_symbol_version(real, name, version) \
+-	__asm__ (".weak " #name); 			\
+-	__asm__ (".weak ." #name); 			\
+-	__asm__ (".set " #name "," #real);		\
+-	__asm__ (".set ." #name ",." #real)
+-#else
+ #define use_default_symbol_version(real, name, version) \
+ 	__asm__ (".weak " #name); \
+ 	__asm__ (".set " #name "," #real)
+ #endif
+-#endif
+ 
+ #endif /* __ALSA_SYMBOLS_H */

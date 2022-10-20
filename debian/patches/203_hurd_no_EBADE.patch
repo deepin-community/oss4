@@ -1,0 +1,35 @@
+GNU/Hurd doesn't have EBADE.  Report EGRATUITOUS there for now (or EIO on any
+other system which doesn't have EBADE either).
+
+Index: oss4-4.2-build2004/lib/libsalsa/seq_output.c
+===================================================================
+--- oss4-4.2-build2004.orig/lib/libsalsa/seq_output.c	2011-06-14 11:33:24.000000000 -0500
++++ oss4-4.2-build2004/lib/libsalsa/seq_output.c	2011-06-14 11:33:24.000000000 -0500
+@@ -40,7 +40,13 @@
+       if (l == -1)
+ 	return -errno;
+ 
++#ifdef EBADE
+       return -EBADE;		/* Randomly selected error */
++#elif defined(EGRATUITOUS)
++      return -EGRATUITOUS;	/* Randomly selected error */
++#else
++      return -EIO;		/* Randomly selected error */
++#endif
+     }
+ 
+   return 0;
+@@ -65,7 +71,13 @@
+       if (l == -1)
+ 	return -errno;
+ 
++#ifdef EBADE
+       return -EBADE;		/* Randomly selected error */
++#elif defined(EGRATUITOUS)
++      return -EGRATUITOUS;	/* Randomly selected error */
++#else
++      return -EIO;		/* Randomly selected error */
++#endif
+     }
+ 
+   return 0;

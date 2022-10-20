@@ -1,0 +1,18 @@
+Index: oss4-4.2-build2004/lib/libsalsa/misc.c
+===================================================================
+--- oss4-4.2-build2004.orig/lib/libsalsa/misc.c	2011-06-14 11:33:21.000000000 -0500
++++ oss4-4.2-build2004/lib/libsalsa/misc.c	2011-06-14 11:33:24.000000000 -0500
+@@ -105,3 +105,13 @@
+   dbg_printf ("snd_lib_error_set_handler()\n");
+   return 0;
+ }
++
++
++/**
++ * \brief Returns the ALSA sound library version in ASCII format
++ * \return The ASCII description of the used ALSA sound library.
++ */
++const char *snd_asoundlib_version(void)
++{
++	return SND_LIB_VERSION_STR;
++}

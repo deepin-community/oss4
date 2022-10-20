@@ -1,0 +1,18 @@
+--- a/kernel/OS/Linux/os_linux.h
++++ b/kernel/OS/Linux/os_linux.h
+@@ -119,6 +119,7 @@ struct _oss_device_t
+ /* System wall timer access */
+ #define GET_JIFFIES()	oss_get_jiffies()
+ 
++#if defined(__i386__) || defined(__x86_64__)
+ __attribute__ ((gnu_inline)) extern inline unsigned int
+ __inb (unsigned short port)
+ {
+@@ -161,6 +162,7 @@ __outl (unsigned int value, unsigned sho
+   __asm__ __volatile__ ("out" "l" " %" "0,%" "w" "1"::"a" (value),
+ 			"d" (port));
+ }
++#endif
+ 
+ #define INB(osdev,a)	__inb(a)
+ #define INW(osdev,a)	__inw(a)

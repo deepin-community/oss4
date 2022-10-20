@@ -1,0 +1,10 @@
+--- oss4-4.2-build2005/kernel/OS/Linux/os_linux.h.orig
++++ oss4-4.2-build2005/kernel/OS/Linux/os_linux.h
+@@ -53,7 +53,6 @@
+ 
+ #include <sys/types.h>
+ #include <sys/param.h>
+-#include <sys/signal.h>
+ #include <oss_errno.h>
+ #include <sys/file.h>
+ #include "oss_ddi.h"

@@ -1,0 +1,61 @@
+--- oss4-4.2-build2004/cmd/ossmixd/ossmixd.c
++++ oss4-4.2-build2004/cmd/ossmixd/ossmixd.c
+@@ -161,7 +161,7 @@
+   oss_mixext *ext;
+   int i;
+   int nrext;
+-  int value, prev_value;
++  int value, prev_value __attribute__((unused));
+ 
+   nrext = ossmix_get_nrext (mixernum);
+ 
+--- oss4-4.2-build2004/cmd/ossphone/ossphone.c
++++ oss4-4.2-build2004/cmd/ossphone/ossphone.c
+@@ -151,7 +151,7 @@
+   printf("Waiting for dial tone...\n");
+   while (dc_level < min_dc_level)
+        {
+-	 int dummy;
++	 int dummy __attribute__((unused));
+          modem_read(modem_in_fd, buf, sizeof(buf));
+          dummy=write(dev_dsp_fd, buf, sizeof(buf));
+ 
+@@ -187,7 +187,7 @@
+        {
+          if (dtmf_fill_digit (digit, digit_len, *phone_number) >= 0)
+            {
+-	     int dummy;
++	     int dummy __attribute__((unused));
+ 
+              printf("%c", *phone_number);
+              fflush(stdout);
+@@ -381,7 +381,7 @@
+ 
+     while (1)
+          {
+-	   int dummy;
++	   int dummy __attribute__((unused));
+            FD_ZERO(&rfds);
+            FD_SET(modem_in_fd, &rfds);
+            FD_SET(dev_dsp_fd, &rfds);
+--- oss4-4.2-build2004/cmd/ossplay/ossplay_parser.c
++++ oss4-4.2-build2004/cmd/ossplay/ossplay_parser.c
+@@ -764,7 +764,7 @@
+          pos = l + 7, tmp, vers;
+   unsigned char buf[256], block_type;
+   flag plock = 0;
+-  int speed = 11025, channels = 1, bits = 8, format = AFMT_U8;
++  int speed = 11025, channels = 1, bits __attribute__((unused)) = 8, format = AFMT_U8;
+   errors_t ret;
+ 
+   if (read (fd, hdr + 19, 7) < 7)
+@@ -1685,7 +1685,7 @@
+ caf_desc_parse (uint32 id, unsigned char * buf, big_t len, file_t * f)
+ {
+   int format;
+-  uint32 bits, bytes_per_packet, flags, frames_per_packet;
++  uint32 bits, bytes_per_packet, flags, frames_per_packet __attribute__((unused));
+ 
+   {
+     /*
+

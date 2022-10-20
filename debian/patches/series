@@ -1,0 +1,23 @@
+001_modules-i386.patch
+002_fix-linux-oss_native_word.patch
+003_linux-error-logging-fixes.patch
+100_dont_fail_when_not_build_kernel_module.patch
+101_use_env_CFLAGS.patch
+102_use_system_txt2man.patch
+103_kfreebsd-gnu.patch
+110_ld-as-needed.patch
+201_arch_without_mregparm.patch
+202_fix_invalid_printf.patch
+203_hurd_no_EBADE.patch
+204_hurd_iot.patch
+205_gcc-4.6.patch
+301_libsalsa_fixes.patch
+302_libsalsa_rename_to_liboss4-salsa.patch
+303_libsalsa_snd_asoundlib_version.patch
+401_cmd.patch
+402_os_cmd.patch
+#generic_srccconf.patch (seems completely broken to me)
+502_linux_io.patch
+reproducible-build.patch
+503_glibc_2.28.patch
+libsalsa_drop_ppc64_specific_workaround_for_versioned_symbols.patch

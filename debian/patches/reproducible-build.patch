@@ -1,0 +1,11 @@
+--- a/setup/setupdir.sh
++++ b/setup/setupdir.sh
+@@ -200,7 +200,7 @@
+ 
+ touch .depend
+ 
+-if date -u +%Y%m%d%H%M > build.id.new 2>/dev/null
++if date -u +%Y%m%d%H%M -d "@${SOURCE_DATE_EPOCH:-$(date +%s)}" > build.id.new 2>/dev/null
+ then
+ 	rm -f build.id
+ 	mv build.id.new build.id

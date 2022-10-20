@@ -1,0 +1,17 @@
+Description: Re-order GCC arguments to enable building with ld --as-needed.
+Author: Stefano Rivera <stefanor@ubuntu.com>
+Last-Update: 2011-06-16
+Bug-Ubuntu: https://launchpad.net/bugs/770972
+Bug-Debian: http://bugs.debian.org/630737
+Forwarded: no
+--- a/setup/srcconf.c
++++ b/setup/srcconf.c
+@@ -1226,7 +1226,7 @@
+ 		     obj_src[i], objdir, objects[i]);
+ 	  else
+ 	    fprintf (f,
+-		     "\t$(CC) -c $(CFLAGS) $(OSFLAGS) $(LIBRARIES) $(INCLUDES) %s -o $(%s)/%s\n",
++		     "\t$(CC) -c $(CFLAGS) $(OSFLAGS) $(INCLUDES) %s -o $(%s)/%s $(LIBRARIES)\n",
+ 		     obj_src[i], objdir, objects[i]);
+ 	  fprintf (f, "\n");
+ 	}

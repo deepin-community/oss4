@@ -1,0 +1,51 @@
+Index: oss4-4.2-build2004/lib/libsalsa/seq.c
+===================================================================
+--- oss4-4.2-build2004.orig/lib/libsalsa/seq.c	2011-06-14 11:33:22.000000000 -0500
++++ oss4-4.2-build2004/lib/libsalsa/seq.c	2011-06-14 11:33:24.000000000 -0500
+@@ -111,7 +111,7 @@
+   if ((seq = malloc (sizeof (*seq))) == NULL)
+     return -ENOMEM;
+ 
+-  dbg_printf ("Created sequencer seq=%x\n", seq);
++  dbg_printf ("Created sequencer seq=%p\n", seq);
+ 
+   memset (seq, 0, sizeof (*seq));
+ 
+Index: oss4-4.2-build2004/lib/libsalsa/seq_output.c
+===================================================================
+--- oss4-4.2-build2004.orig/lib/libsalsa/seq_output.c	2011-06-14 11:33:22.000000000 -0500
++++ oss4-4.2-build2004/lib/libsalsa/seq_output.c	2011-06-14 11:35:11.000000000 -0500
+@@ -78,7 +78,7 @@
+ 
+   dbg_printf3
+     ("Event %2d: flags=%08x tag=%08x, q=%2d, time=%d, src=%x, dst=%x\n",
+-     ev->type, ev->flags, ev->tag, ev->queue, ev->time, ev->source, ev->dest);
++     ev->type, ev->flags, ev->tag, ev->queue, ev->time.tick, ev->source, ev->dest);
+ 
+   switch (ev->type)
+     {
+Index: oss4-4.2-build2004/lib/libsalsa/timer.c
+===================================================================
+--- oss4-4.2-build2004.orig/lib/libsalsa/timer.c	2011-06-14 11:33:22.000000000 -0500
++++ oss4-4.2-build2004/lib/libsalsa/timer.c	2011-06-14 11:33:24.000000000 -0500
+@@ -57,7 +57,7 @@
+ 
+   timer = malloc (sizeof (*timer));
+ 
+-  dbg_printf ("snd_timer_open(name='%s', mode=%x)=%x\n", name, mode, timer);
++  dbg_printf ("snd_timer_open(name='%s', mode=%x)=%p\n", name, mode, timer);
+ 
+   if (timer == NULL)
+     return -ENOMEM;
+Index: oss4-4.2-build2004/lib/libsalsa/local.h
+===================================================================
+--- oss4-4.2-build2004.orig/lib/libsalsa/local.h	2011-06-14 11:33:24.000000000 -0500
++++ oss4-4.2-build2004/lib/libsalsa/local.h	2011-06-14 11:33:24.000000000 -0500
+@@ -9,6 +9,7 @@
+ #include "../../include/soundcard.h"
+ #include "alsakernel.h"
+ #include <sys/poll.h>
++#include <sys/ioctl.h>
+ #include "../../kernel/framework/include/midiparser.h"
+ 
+ extern int alib_verbose;

@@ -1,0 +1,18 @@
+#!/bin/sh
+#
+# 99oss4-pm: Restart sound on suspend/resumt
+
+case "$1" in
+	hibernate|suspend)
+		# We need to force unload in order
+		# to quit applications that are using oss4..
+		invoke-rc.d oss4-base force-unload
+		;;
+	thaw|resume)
+		invoke-rc.d oss4-base start
+		;;
+	*) exit $NA
+		;;
+esac
+
+

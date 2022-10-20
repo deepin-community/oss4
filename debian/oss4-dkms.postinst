@@ -1,0 +1,24 @@
+#! /bin/sh
+# postinst script for liquidsoap
+set -e
+
+#DEBHELPER#
+
+case "$1" in
+    configure)
+        # Restart oss4-base
+	invoke-rc.d oss4-base force-reload
+    ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+    exit 0
+    ;;
+
+    *)
+    echo "postinst called with unknown argument \`$1'" >&2
+    exit 1
+    ;;
+esac
+
+exit 0
+

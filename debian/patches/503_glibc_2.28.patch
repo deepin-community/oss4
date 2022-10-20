@@ -1,0 +1,25 @@
+---
+ os_cmd/FreeBSD/ossdetect/ossdetect.c |    1 +
+ os_cmd/Linux/ossdetect/ossdetect.c   |    1 +
+ 2 files changed, 2 insertions(+)
+
+--- a/os_cmd/FreeBSD/ossdetect/ossdetect.c
++++ b/os_cmd/FreeBSD/ossdetect/ossdetect.c
+@@ -22,6 +22,7 @@
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <sys/param.h>
++#include <sys/sysmacros.h>
+ #include <sys/pciio.h>
+ #include <dev/pci/pcireg.h>
+ 
+--- a/os_cmd/Linux/ossdetect/ossdetect.c
++++ b/os_cmd/Linux/ossdetect/ossdetect.c
+@@ -23,6 +23,7 @@
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <sys/dir.h>
++#include <sys/sysmacros.h>
+ #include <grp.h>
+ 
+ #define PCI_PASS	0

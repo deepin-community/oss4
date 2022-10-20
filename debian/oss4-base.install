@@ -1,0 +1,24 @@
+debian/30oss4-pm etc/pm/sleep.d
+debian/modprobe.d/oss4-base.conf etc/modprobe.d/
+debian/oss.conf etc/
+debian/tmp/usr/bin/ossinfo
+debian/tmp/usr/bin/ossmix
+debian/tmp/usr/bin/ossplay
+debian/tmp/usr/bin/osstest
+debian/tmp/usr/lib/oss/conf.tmpl/* etc/oss4/conf/
+debian/tmp/usr/lib/oss/etc/devices.list etc/oss4/
+debian/tmp/usr/lib/oss/version.dat etc/oss4/
+debian/tmp/usr/sbin/ossdetect
+debian/tmp/usr/sbin/ossdevlinks
+debian/tmp/usr/sbin/savemixer
+debian/tmp/usr/sbin/vmixctl
+debian/tmp/usr/share/man/man1/ossinfo.1.gz
+debian/tmp/usr/share/man/man1/ossmix.1.gz
+debian/tmp/usr/share/man/man1/ossplay.1.gz
+debian/tmp/usr/share/man/man1/ossrecord.1.gz
+debian/tmp/usr/share/man/man1/osstest.1.gz
+debian/tmp/usr/share/man/man7
+debian/tmp/usr/share/man/man8/ossdetect.8.gz
+debian/tmp/usr/share/man/man8/ossdevlinks.8.gz
+debian/tmp/usr/share/man/man8/savemixer.8.gz
+debian/tmp/usr/share/man/man8/vmixctl.8.gz

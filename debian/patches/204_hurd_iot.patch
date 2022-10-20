@@ -1,0 +1,21 @@
+This is needed for GNU/Hurd build. These _IOT__IOTBASE_* definitions will not
+work of course, that's ok since we do not support sound yet anyway, and we do
+not export this to other packages.
+
+Index: oss4-4.2-build2004/lib/libsalsa/local.h
+===================================================================
+--- oss4-4.2-build2004.orig/lib/libsalsa/local.h	2011-06-14 11:33:22.000000000 -0500
++++ oss4-4.2-build2004/lib/libsalsa/local.h	2011-06-14 11:35:15.000000000 -0500
+@@ -96,3 +96,12 @@
+ extern void midiparser_callback (void *context, int category,
+ 				 unsigned char msg, unsigned char ch,
+ 				 unsigned char *parms, int len);
++
++#define _IOT__IOTBASE_oss_longname_t _IOT (0, 0, 0, 0, 0, 0)
++#define _IOT__IOTBASE_audio_buf_info _IOT (0, 0, 0, 0, 0, 0)
++#define _IOT__IOTBASE_oss_sysinfo _IOT (0, 0, 0, 0, 0, 0)
++#define _IOT__IOTBASE_oss_mixext _IOT (0, 0, 0, 0, 0, 0)
++#define _IOT__IOTBASE_oss_mixer_value _IOT (0, 0, 0, 0, 0, 0)
++#define _IOT__IOTBASE_oss_audioinfo _IOT (0, 0, 0, 0, 0, 0)
++#define _IOT__IOTBASE_oss_mixerinfo _IOT (0, 0, 0, 0, 0, 0)
++#define _IOT__IOTBASE_oss_card_info _IOT (0, 0, 0, 0, 0, 0)

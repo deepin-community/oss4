@@ -1,0 +1,116 @@
+--- a/include/soundcard.h
++++ b/include/soundcard.h
+@@ -50,7 +50,7 @@
+ /* In Linux we need to be prepared for cross compiling */
+ #include <linux/ioctl.h>
+ #else
+-# ifdef __FreeBSD__
++# if defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
+ #    include <sys/ioccom.h>
+ # else
+ #    include <sys/ioctl.h>
+--- a/kernel/framework/audio/oss_audio_core.c
++++ b/kernel/framework/audio/oss_audio_core.c
+@@ -3646,7 +3646,7 @@
+ 	}
+       return 0;
+ 
+-#ifdef __FreeBSD__
++#if defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
+     case FREEBSD_GETBLKSIZE:
+ #endif
+     case SNDCTL_DSP_GETBLKSIZE:
+--- a/kernel/framework/sndstat/oss_sndstat.c
++++ b/kernel/framework/sndstat/oss_sndstat.c
+@@ -109,9 +109,9 @@
+       put_status ("\n");
+     }
+ 
+-#if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__)
++#if defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || defined(__OpenBSD__) || defined(__NetBSD__)
+   {
+-#if defined(__FreeBSD__)
++#if defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
+     extern char version[];
+ #endif
+ 
+--- a/lib/libOSSlib/compile.sh
++++ b/lib/libOSSlib/compile.sh
+@@ -7,7 +7,7 @@
+ 	$MAKE libOSSlib.so
+ 	;;
+ 
+-"FreeBSD")
++"FreeBSD" | "GNU/kFreeBSD")
+ 	$MAKE libOSSlib.so
+ 	;;
+ 
+--- a/setup/srcconf.c
++++ b/setup/srcconf.c
+@@ -122,7 +122,7 @@
+ #include "srcconf_linux.inc"
+ #endif
+ 
+-#ifdef __FreeBSD__
++#if defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
+ #include "srcconf_freebsd.inc"
+ #endif
+ 
+@@ -480,7 +480,7 @@
+ #include "gen_driver_linux.inc"
+ #endif
+ 
+-#if defined(__FreeBSD__)
++#if defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
+ #include "gen_driver_freebsd.inc"
+ #endif
+ 
+@@ -1456,6 +1456,8 @@
+     strcpy (un.sysname, "SCO_SV");
+   if (strcmp (un.sysname, "Haiku") == 0)
+     strcpy (un.sysname, "BeOS");
++  if (strcmp (un.sysname, "GNU/kFreeBSD") == 0)
++    strcpy (un.sysname, "FreeBSD");
+   printf ("System: %s\n", un.sysname);
+   strcpy (conf->system, un.sysname);
+   sprintf (this_os, "kernel/OS/%s", un.sysname);
+@@ -1549,7 +1551,7 @@
+   if (hostcc == NULL) hostcc = DEFAULT_CC;
+   if (targetcc == NULL) targetcc = DEFAULT_CC;
+ 
+-#if defined(linux) || defined(__FreeBSD__) || defined(__SCO_VERSION__)
++#if defined(linux) || defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || defined(__SCO_VERSION__)
+   mkdir ("target", 0755);
+   mkdir ("target/build", 0755);
+   system ("touch target/build/.nomake");
+--- a/setup/setupdir.sh
++++ b/setup/setupdir.sh
+@@ -33,6 +33,12 @@
+ 	OS=BeOS
+ fi
+ 
++# Use the same source directories for FreeBSD and GNU/kFreeBSD
++if test "$OS " = "GNU/kFreeBSD "
++then
++	OS=FreeBSD
++fi
++
+ # Use Linux24 as the OS name for Linux 2.4.x
+ if test "$OS " = "Linux "
+ then
+--- a/setup/FreeBSD/build.sh
++++ b/setup/FreeBSD/build.sh
+@@ -150,10 +150,10 @@
+ 	strip prototype/usr/sbin/osslic
+ 
+         BITS=3 # Default to 32 bit ELF format
+-        if test "`uname -m` " = "amd64 "
+-        then
++        case "`uname -m`" in amd64|x86_64)
+            BITS=6 # Use 64 bit ELF format
+-        fi
++	;;
++	esac
+ 
+ 	prototype/usr/sbin/osslic -q -u -$BITS./prototype/$OSSLIBDIR/build/osscore.lib
+ 	

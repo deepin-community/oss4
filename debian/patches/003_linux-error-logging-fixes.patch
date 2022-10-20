@@ -1,0 +1,66 @@
+From: Ben Hutchings <ben@decadent.org.uk>
+Subject: Linux error logging fixes
+
+The Linux implementation of oss_cmn_err() uses a fixed-size temporary
+buffer and does not protect against overflow.  Although this is not
+obviously exploitable, it could well become exploitable in future.
+
+The argument counting and copying is also unportable and generally
+incorrect.
+
+Therefore:
+- If we are not going to edit the log line in any way, just call
+  vprintk() and don't bother with the temporary buffer.
+- If we need to edit the log line or call panic() instead of printk(),
+  use vsnprintf() instead of printf().
+
+---
+--- a/setup/Linux/oss/build/osscore.c
++++ b/setup/Linux/oss/build/osscore.c
+@@ -633,43 +633,24 @@ oss_create_uio (uio_t * uio, char *buf,
+ void
+ oss_cmn_err (int level, const char *s, ...)
+ {
+-  char tmp[1024], *a[6];
++  char tmp[1024];
+   va_list ap;
+-  int i, n = 0;
+ 
+   va_start (ap, s);
+ 
+-  for (i = 0; i < strlen (s); i++)
+-    if (s[i] == '%')
+-      n++;
+-
+-  for (i = 0; i < n && i < 6; i++)
+-    a[i] = va_arg (ap, char *);
+-
+-  for (i = n; i < 6; i++)
+-    a[i] = NULL;
+-
+   if (level == CE_CONT)
+     {
+-      sprintf (tmp, s, a[0], a[1], a[2], a[3], a[4], a[5], NULL,
+-	       NULL, NULL, NULL);
+-      printk ("%s", tmp);
++      vprintk (s, ap);
+     }
+   else
+     {
+       strcpy (tmp, "osscore: ");
+-      sprintf (tmp + strlen (tmp), s, a[0], a[1], a[2], a[3], a[4], a[5],
+-	       NULL, NULL, NULL, NULL);
++      vsnprintf (tmp + strlen (tmp), sizeof(tmp) - strlen(tmp), s, ap);
+       if (level == CE_PANIC)
+ 	panic (tmp);
+ 
+       printk (KERN_ALERT "%s", tmp);
+     }
+-#if 0
+-  /* This may cause a crash under SMP */
+-  if (sound_started)
+-    store_msg (tmp);
+-#endif
+ 
+   va_end (ap);
+ }

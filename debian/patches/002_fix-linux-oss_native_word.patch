@@ -1,0 +1,26 @@
+From: Ben Hutchings <ben@decadent.org.uk>
+Subject: Fix definition of oss_native_word for Linux
+
+On x86_64, unsigned long long and unsigned long have the same size,
+but Linux requires status flag variables to have type unsigned long.
+The current definition results in warning such as:
+
+build/core/oss_core.c: In function 'oss_fp_check':
+build/core/oss_core.c:1862:3: warning: comparison of distinct pointer types lacks a cast [enabled by default]
+
+---
+--- a/kernel/OS/Linux/wrapper/wrap.h
++++ b/kernel/OS/Linux/wrapper/wrap.h
+@@ -21,11 +21,7 @@
+ /*
+  * Some integer types
+  */
+-#if defined(__x86_64__)
+ typedef unsigned long oss_native_word;	/* Same as the address and status register size */
+-#else
+-typedef unsigned long oss_native_word;	/* Same as the address and status register size */
+-#endif
+ typedef long long oss_int64_t;			/* Signed 64 bit integer */
+ typedef unsigned long long oss_uint64_t;	/* Unsigned 64 bit integer */
+ 
+

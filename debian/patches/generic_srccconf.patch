@@ -1,0 +1,75 @@
+--- oss-v4.2-build2003-src-gpl/setup/srcconf.c.orig	2010-08-23 03:17:48.000000000 +0200
++++ oss-v4.2-build2003-src-gpl/setup/srcconf.c	2010-08-23 03:31:07.000000000 +0200
+@@ -107,32 +107,38 @@
+ 
+ static char arch[32] = "";
+ 
+-static void
+-generate_driver (char *name, conf_t * conf, char *cfg_name, char *cfg_header,
+-		 char *dirname, char *topdir);
+-
+-typedef void
+-(*generate_driver_t) (char *name, conf_t * conf, char *cfg_name, char *cfg_header,
+-                 char *dirname, char *topdir);
+-
+-generate_driver_t driver_gen = generate_driver;
+-
+ #ifdef linux
+ #include "srcconf_vxworks.inc"
+ #include "srcconf_linux.inc"
++#define HAVE_SRCCONF
+ #endif
+ 
+ #ifdef __FreeBSD__
+ #include "srcconf_freebsd.inc"
++#define HAVE_SRCCONF
+ #endif
+ 
+ #ifdef sun
+ #include "srcconf_vxworks.inc"
+ #include "srcconf_solaris.inc"
++#define HAVE_SRCCONF
+ #endif
+ 
+ #if defined(__BEOS__) || defined(__HAIKU__)
+ #include "srcconf_beos.inc"
++#define HAVE_SRCCONF
++#endif
++
++#ifdef HAVE_SRCCONF
++static void
++generate_driver (char *name, conf_t * conf, char *cfg_name, char *cfg_header,
++		 char *dirname, char *topdir);
++
++typedef void
++(*generate_driver_t) (char *name, conf_t * conf, char *cfg_name, char *cfg_header,
++                 char *dirname, char *topdir);
++
++generate_driver_t driver_gen = generate_driver;
+ #endif
+ 
+ static int
+@@ -643,8 +649,10 @@
+ 	conf.mode == MD_KERNEL_ || conf.mode == MD_MODULE_)
+       return 0;
+ 
++#ifdef HAVE_SRCCONF
+   if (conf.mode == MD_MODULE)
+     driver_gen (name, &conf, cfg_name, cfg_header, path, topdir);
++#endif
+ 
+   if ((dir = opendir (path)) == NULL)
+     {
+@@ -1471,9 +1479,9 @@
+ 	shlib_ldflags = "-G -lsocket -lnsl";
+ # endif
+ 
+-  if (strcmp (un.machine, "i386") == 0 ||
+-      strcmp (un.machine, "i486") == 0 ||
+-      strcmp (un.machine, "i586") == 0 || strcmp (un.machine, "i686") == 0)
++  if (strncmp (un.machine, "i386", 4) == 0 ||
++      strncmp (un.machine, "i486", 4) == 0 ||
++      strncmp (un.machine, "i586", 4) == 0 || strncmp (un.machine, "i686", 4) == 0)
+     {
+       strcpy (conf->platform, "i86pc");
+     }
